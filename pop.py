@@ -11,7 +11,7 @@ introduction=\
 pop생활인구는 서울시에서 제공하는 Open API를 통해 내려받은 \
 행정동별 생활인구 데이터를 보다 가볍고 보기쉽게 가공하는 응용 프로그램입니다. \
 날짜 범위와 행자부행정동 코드를 입력하면 원하는 범위의 일주일간/시간별 \
-(성별, 인구 통합)생활인구를 csv파일과 그래프로 정리해 제공합니다.\n"
+(성별, 인구 통합)생활인구를 csv파일과 그래프로 정리해 제공합니다."
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -20,10 +20,10 @@ import urllib.request
 import json 
 from datetime import date
 
-
 #fixed variable
 
 st0="http://openapi.seoul.go.kr:8088//json/SPOP_LOCAL_RESD_DONG/1/30/"
+posible_year={}
 
 #basic functions
 
@@ -91,10 +91,22 @@ def testcall(dali,qu,s):
             continue
     return foo
 
-    
 #core functions
 
 def check_date(qu,s,n):
+    if posible_year:
+        yli=posible_year['yli']
+        zx=posible_year['zx']
+        for i in range(n):
+            print(yli[i] + '년 조회 가능 달:')
+            foo=''
+            for j in zx[i]:
+                foo = foo + j +', '
+            foo = foo[:-2]
+            print(foo)
+        print('')
+        return
+   
     t=date.today()
     ty=t.year
     yli=[]
@@ -109,9 +121,16 @@ def check_date(qu,s,n):
             yx[i].append(yli[i]+two_dig(k)+'01')
         zx.append(testcall(yx[i],qu,s))
     
+    posible_year['yli']=yli
+    posible_year['zx']=zx
+    
     for i in range(n):
         print(yli[i] + '년 조회 가능 달:')
-        print(zx[i])
+        foo=''
+        for j in zx[i]:
+            foo = foo + j +', '
+        foo = foo[:-2]
+        print(foo)
     print('')
 
 def load(ds,de,lo,qu,st2):
@@ -191,7 +210,7 @@ def make_graph(df):
 #menu
 
 def print_menu():
-    print('<메뉴>')
+    print('\n<메뉴>')
     print("1. 생활인구 데이터 출력")
     print("2. 재출력")
     print("3. 설정")
