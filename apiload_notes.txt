@@ -1,0 +1,24 @@
+http://openapi.seoul.go.kr:8088/joebrightman/json/CardSubwayStatsNew/1/1000/20200601
+
+
+http://openapi.seoul.go.kr:8088/524569796a6a6f6535324870784556/json/SPOP_LOCAL_RESD_DONG/1/5/20200601//11410585
+
+THE KEY
+524569796a6a6f6535324870784556
+
+신촌동:
+11410585
+
+
+http://openapi.seoul.go.kr:8088/524569796a6a6f6535324870784556/json/SPOP_LOCAL_RESD_DONG/1/24/20200817/01/11410585
+
+20190101
+20190201
+11410585
+
+cd OneDrive\문서\pyproj\pop
+pyinstaller -F pop.py
+
+pyinstaller -f --exclude numpy pop.py
+
+matplotlib

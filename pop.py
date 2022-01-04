@@ -137,12 +137,13 @@ def load(ds,de,lo,qu,st2):
     dp=pd.date_range(str(ds),str(de))
     days=dp.strftime("%Y%m%d").tolist()
     dset=[]
-    for i in days:
-        req=st2 + str(i) + '/%20/' + str(lo)
-        req_s=st0 + str(i) + '/%20/' + str(lo) #키를 숨긴 프린트용
-        print(req_s)
-        j3=call(req,qu)
-        dset.append(j3)
+    for o in lo:
+        for i in days:
+            req=st2 + str(i) + '/%20/' + str(o)
+            req_s=st0 + 'apikey' + str(i) + '/%20/' + str(o) #키를 숨긴 프린트용
+            print(req_s)
+            j3=call(req,qu)
+            dset.append(j3)
     popa=pd.concat(dset, ignore_index=True)
     poplocx=popa.rename(columns = {"STDR_DE_ID":"date", "TMZON_PD_SE":"time", "ADSTRD_CODE_SE":"loc", "TOT_LVPOP_CO":"population"})
     poplocx['wd']=0
@@ -236,6 +237,20 @@ def print_setting1():
         pickle.dump(setting, f)
         print('저장됨')
 
+def inp_location(locli):
+    pric=''
+    for i in locli:
+        pric=pric + str(i) + ', '
+    pric= pric[:-2]
+    print('현재입력코드목록: '+pric)
+    foo=input('행정동코드입력(ex. 11410585)(모두 입력하셨다면 엔터를 클릭하시오): ')
+    if foo == '':
+        print('입력완료')
+        return locli
+    else:
+        locli.append(foo)
+        return inp_location(locli)
+
 def run():
     global setting
     with open('pop_setting.txt', 'rb') as f:
@@ -251,7 +266,7 @@ def run():
             check_date(qu0, st1, 3)
             da1=input("시작일(ex. 20210101): ")
             da2=input("종료일(ex.20210131): ")
-            lo1=input("행정동코드(ex. 11410585): ")
+            lo1=inp_location([])
             
             print("생활인구 데이터 다운로드 중...")
             try:
